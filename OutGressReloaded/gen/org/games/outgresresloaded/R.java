@@ -222,9 +222,10 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f06000a;
+        public static final int action_settings=0x7f06000b;
         public static final int contrasena=0x7f060009;
         public static final int hybrid=0x7f060004;
+        public static final int imageView1=0x7f06000a;
         public static final int login=0x7f060006;
         public static final int none=0x7f060000;
         public static final int normal=0x7f060001;
@@ -239,10 +240,12 @@ containing a value of this type.
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
-        public static final int fragment_main=0x7f030001;
+        public static final int activity_splash_screen=0x7f030001;
+        public static final int fragment_main=0x7f030002;
     }
     public static final class menu {
         public static final int main=0x7f0b0000;
+        public static final int splash_screen=0x7f0b0001;
     }
     public static final class string {
         public static final int action_settings=0x7f07001d;
@@ -346,6 +349,7 @@ containing a value of this type.
          */
         public static final int location_client_powered_by_google=0x7f07001a;
         public static final int login=0x7f07001e;
+        public static final int title_activity_splash_screen=0x7f07001f;
     }
     public static final class style {
         /** 

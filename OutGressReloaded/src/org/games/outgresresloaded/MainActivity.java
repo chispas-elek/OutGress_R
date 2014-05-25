@@ -37,7 +37,6 @@ public class MainActivity extends Activity {
 	private JSONObject jsonObject;
 	private GoogleCloudMessaging gcm;
 	private static String SENDER_ID = "72974413367";
-	final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +45,7 @@ public class MainActivity extends Activity {
 		//Comprobamos si el dispositivo es compatible con GCM si lo es, que ejecute todo
 		//if(checkPlayServices()) {;
 		
-		
+		final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 		//Comprobamos si existen datos del usuario guardados en el sistema
 		String codigoUser = prefs.getString("validacion", "0");
 		if(codigoUser != "0") {
@@ -170,6 +169,7 @@ public class MainActivity extends Activity {
 					String regid = gcm.register(SENDER_ID);
 					msg  = "Dispositivo registrado correctamente con el regid: "+regid;
 					//Guardamos el GCM en las preferencias
+					SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = prefs.edit();
 					editor.putString("gcm", regid);
 					editor.commit();
