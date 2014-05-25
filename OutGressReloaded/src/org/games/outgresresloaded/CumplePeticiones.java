@@ -62,7 +62,7 @@ public class CumplePeticiones extends AsyncTask<Void, Void, String> {
         //Configuramos con los datos el client y el post  
         this.httpclient = new DefaultHttpClient(httpParameters);
         //10.0.2.2 es el localhost de Android
-        this.httppost = new HttpPost("http://galan.ehu.es/rmulero001/DAS/"+pagina);
+        this.httppost = new HttpPost("http://galan.ehu.es/avalle004/DAS/Outgress_r/"+pagina);
         try {
 			httppost.setEntity(new UrlEncodedFormEntity(parametros));
 		} catch (UnsupportedEncodingException e) {
@@ -98,6 +98,7 @@ public class CumplePeticiones extends AsyncTask<Void, Void, String> {
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
 			result = EntityUtils.toString(entity);
+			Log.i("Base de datos", "La base de datos me devuelve: "+result);
 			//Eliminar éstos dos JSON que sobran
 			//jsonObject = new JSONObject(result);
 			//jsonArray = new JSONArray(result);
@@ -122,6 +123,5 @@ public class CumplePeticiones extends AsyncTask<Void, Void, String> {
 		//Se deshabilida el dialogo y se cieera la conexion.
 		//dialog.dismiss();
 	}
-
 
 }

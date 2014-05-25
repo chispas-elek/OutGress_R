@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +35,7 @@ import android.preference.PreferenceManager;
 
 public class MainActivity extends Activity {
 
-	private JSONObject jsonObject;
+	private JSONArray jsonArray;
 	private GoogleCloudMessaging gcm;
 	private static String SENDER_ID = "72974413367";
 	
@@ -55,12 +56,12 @@ public class MainActivity extends Activity {
 			CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros,"loginc.php").execute();
 			//Recogemos la respuesta
 			try {
-				this.jsonObject = new JSONObject(result.get());
+				this.jsonArray = new JSONArray(result.get());
 				//Comprobamos si el identificador que teníamos guardado coincide con el de la BD
 				int idUsuario = prefs.getInt("idusuario", 0);
-				if(jsonObject.getInt("idusuario") == idUsuario) {
-					//Los datos son correctos, asi que saltamos a la pantalla principal
-					
+				if(jsonArray.getJSONObject(0).getInt("idusuario") == idUsuario) {
+					//TODO Los datos son correctos, asi que saltamos a la pantalla principa////////////////////////////
+					Toast.makeText(getApplicationContext(), "Saltamos", Toast.LENGTH_LONG).show();
 				}else {
 					//Algo no ha ido bien
 					Log.e("Login", "Error a la hora de procesar los identificadores del login");
@@ -87,16 +88,16 @@ public class MainActivity extends Activity {
 					CumplePeticiones result2 = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros2,"login.php").execute();
 					//Recogemos la respuesta
 					try {
-						jsonObject = new JSONObject(result2.get());
+						jsonArray = new JSONArray(result2.get());
 						//Comprobamos que hayamos recibido algun dato
-						if(jsonObject.getString("usuario") != null) {
+						if(jsonArray.getJSONObject(0).getString("usuario") != null) {
 							//El usuario logueado es correcto asi que procedemos a registrar los datos en el dispotivo.
 							//Registramos el dispositivo en el GCM y guardamos el identificador
-							registrarse();
+							registrarseGCM();
 							//Guardaremos el idusuario y la validacion
 							SharedPreferences.Editor editor = prefs.edit();
-							editor.putInt("idusuario", jsonObject.getInt("idusuario"));
-							editor.putString("validacion", jsonObject.getString("validacion"));
+							editor.putInt("idusuario", jsonArray.getJSONObject(0).getInt("idusuario"));
+							editor.putString("validacion", jsonArray.getJSONObject(0).getString("validacion"));
 							editor.commit();
 							//Una vez validado el usuario se carga la interfaz principal del sistema
 							Toast.makeText(getApplicationContext(), "Login correcto, bienvenido", Toast.LENGTH_LONG).show();
@@ -127,7 +128,7 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		//Comprobamos que nuestro dispositivo sea compatible con GCM
-		this.checkPlayServices();
+		//this.checkPlayServices();
 	}
 
 	/**
@@ -158,7 +159,7 @@ public class MainActivity extends Activity {
 	 */
 	
 	
-	private void registrarse() { 
+	private void registrarseGCM() { 
 		new AsyncTask<Void,Void,String>(){ 
 			@Override
 			protected String doInBackground(Void... params) {
