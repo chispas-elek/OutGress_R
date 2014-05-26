@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -60,8 +61,8 @@ public class MainActivity extends Activity {
 				//Comprobamos si el identificador que teníamos guardado coincide con el de la BD
 				int idUsuario = prefs.getInt("idusuario", 0);
 				if(jsonArray.getJSONObject(0).getInt("idusuario") == idUsuario) {
-					//TODO Los datos son correctos, asi que saltamos a la pantalla principa////////////////////////////
-					Toast.makeText(getApplicationContext(), "Saltamos", Toast.LENGTH_LONG).show();
+					Intent i = new Intent(MainActivity.this,InicioActivity.class);
+					startActivity(i);
 				}else {
 					//Algo no ha ido bien
 					Log.e("Login", "Error a la hora de procesar los identificadores del login");
@@ -98,14 +99,13 @@ public class MainActivity extends Activity {
 							SharedPreferences.Editor editor = prefs.edit();
 							editor.putInt("idusuario", jsonArray.getJSONObject(0).getInt("idusuario"));
 							editor.putString("validacion", jsonArray.getJSONObject(0).getString("validacion"));
+							editor.putString("equipo", jsonArray.getJSONObject(0).getString("equipo"));
 							editor.commit();
 							//Una vez validado el usuario se carga la interfaz principal del sistema
 							Toast.makeText(getApplicationContext(), "Login correcto, bienvenido", Toast.LENGTH_LONG).show();
 							
-							/*
-							 * Aqui se incluyen los datos necesarios para cargar la interfaz del usuario.
-							 * 
-							 */
+							Intent i = new Intent(MainActivity.this,InicioActivity.class);
+							startActivity(i);
 							
 						}else {
 							//Los datos introducidos son incorrectos
