@@ -1,0 +1,68 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="org.games.outgresresloaded.InfoPortal$PlaceholderFragment" >
+
+    <TextView
+        android:id="@+id/infoNombrePortal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:text="Nombre del portal" />
+
+    <ImageView
+        android:id="@+id/infoFotoPortal"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/infoNombrePortal"
+        android:layout_below="@+id/infoNombrePortal" />
+    <!-- android:src="@drawable/ic_launcher" -->
+
+    <Button
+        android:id="@+id/infoButAtacarPortal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/infoFotoPortal"
+        android:layout_toRightOf="@+id/infoFotoPortal"
+        android:text="Atacar portal" />
+
+    <TextView
+        android:id="@+id/infoCapturadoPor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/infoButAtacarPortal"
+        android:layout_toRightOf="@+id/infoFotoPortal"
+        android:text="Capturado por:\n" />
+
+    <TextView
+        android:id="@+id/infoFechaCaputrado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/infoCapturadoPor"
+        android:layout_below="@+id/infoCapturadoPor"
+        android:text="Fecha:\n" />
+
+    <TextView
+        android:id="@+id/infoPortalDistancia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/infoFotoPortal"
+        android:layout_below="@+id/infoFotoPortal"
+        android:text="El portal se encuentra a " />
+
+    <TextView
+        android:id="@+id/infoPortalDescripcion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/infoPortalDistancia"
+        android:layout_below="@+id/infoPortalDistancia"
+        android:text="Descripción del portal" />
+
+</RelativeLayout>
+
