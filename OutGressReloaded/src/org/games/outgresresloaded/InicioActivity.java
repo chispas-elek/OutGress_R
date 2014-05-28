@@ -41,6 +41,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -88,7 +90,7 @@ public class InicioActivity extends FragmentActivity {
 		//El usuario pulsa sobre un portal
 		mapa.setOnMarkerClickListener(new OnMarkerClickListener() {
 			public boolean onMarkerClick(Marker marker) {
-				//qué se quiere hacer
+				//quï¿½ se quiere hacer
 				return false;
 			}
 		}); 
@@ -105,14 +107,32 @@ public class InicioActivity extends FragmentActivity {
 				CameraUpdate actualizar = CameraUpdateFactory.newLatLngZoom(new LatLng(pos.getLatitude(), pos.getLongitude()), 14);
 				mapa.animateCamera(actualizar);
 				Toast.makeText(getApplicationContext(), "Mapa actualizado Latitud: "+pos.getLatitude()+ " Longitud: "+pos.getLongitude(), Toast.LENGTH_LONG).show();
-				//Actualizamos la lista de los portales más cercanos en base a mi posición y los marco en el mapa.
+				//Actualizamos la lista de los portales mï¿½s cercanos en base a mi posiciï¿½n y los marco en el mapa.
 				LatLng longLatid = new LatLng(pos.getLatitude(), pos.getLongitude());
 				GestionarPortales gestion = new GestionarPortales(InicioActivity.this);
 				JSONArray jsonArr = gestion.listaPortales(longLatid);
 				//A partir de los resultados, marcamos las posiciones en el mapa.
 				for(int i=0;i<jsonArr.length();i++) {
+					//Preguntamos a la BD de quÃ© color es el 
+					
+					//TODO Hay que hacer una llamada a la BD para saber a quÃ© equipoo pertenece el jugador que posee el portal
+					
+					//TODO Cuando sepamos de que equipo es el portal capturado, hacemos condiciones para darle color al marquer. 
+					
+					/**
+					 * Tendremos 3 colores
+					 * 
+					 * Verde
+					 * Azul
+					 * Gris
+					 */
+					
+					//BitmapDescriptor color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
+					
 					try {
-						mapa.addMarker(new MarkerOptions().position(new LatLng(jsonArr.getJSONObject(i).getDouble("latitud"),jsonArr.getJSONObject(i).getDouble("longitud"))).title("Descripción del marcador"));
+						mapa.addMarker(new MarkerOptions().position(new LatLng(jsonArr.getJSONObject(i).getDouble("latitud"),jsonArr.getJSONObject(i).getDouble("longitud")))
+								.title("Descripciï¿½n del marcador").snippet("and snippet"));
+								//.icon(color));
 					} catch (JSONException e) {
 						e.printStackTrace();
 						Log.e("Error JSON", "Se ha producido un error a la hora de manejar el JSON con los Markers del MAPA");

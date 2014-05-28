@@ -109,10 +109,10 @@ public class GestionarPortales {
 				float[] resultadoPortalActual = null;
 				float[] resultadoPortalOrdenado = null;
 				if(indexOrdenados.size() == 0) {
-					//La lista de index está vacía inserto directamente
+					//La lista de index estï¿½ vacï¿½a inserto directamente
 					indexOrdenados.add(i);
 				}else {
-					//La lista contiene elementos, comparo para saber cual es más pequeño
+					//La lista contiene elementos, comparo para saber cual es mï¿½s pequeï¿½o
 					int j = 0;
 					boolean insertado = false;
 					while(j < indexOrdenados.size() && !insertado) {
@@ -124,12 +124,12 @@ public class GestionarPortales {
 						Location.distanceBetween(latitudUsu, longitudUsu, latitudAct, longitudAct, resultadoPortalOrdenado);
 						Log.i("PortalOrdenado", "El resultado del portal Ordenado es: "+resultadoPortalOrdenado[0]);
 						if(resultadoPortalActual[0] < resultadoPortalOrdenado[0]); {
-							//El portal, actual está mas cerca del usuario
+							//El portal, actual estï¿½ mas cerca del usuario
 							indexOrdenados.add(j,i );
 							insertado = true;
 						}
 					}
-					//Nuestro valor está más alejado que el resto, asi que entra en el ultimo lugar.
+					//Nuestro valor estï¿½ mï¿½s alejado que el resto, asi que entra en el ultimo lugar.
 					if(!insertado) {
 						indexOrdenados.add(i);
 					}
