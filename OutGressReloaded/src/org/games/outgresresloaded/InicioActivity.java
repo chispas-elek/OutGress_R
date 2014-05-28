@@ -85,6 +85,14 @@ public class InicioActivity extends FragmentActivity {
 		}
 		, 0, 1000 * 40);
 		
+		//El usuario pulsa sobre un portal
+		mapa.setOnMarkerClickListener(new OnMarkerClickListener() {
+			public boolean onMarkerClick(Marker marker) {
+				//qué se quiere hacer
+				return false;
+			}
+		}); 
+		
 	}
 	
 	private void actualizarPosicion(){
@@ -97,6 +105,19 @@ public class InicioActivity extends FragmentActivity {
 				CameraUpdate actualizar = CameraUpdateFactory.newLatLngZoom(new LatLng(pos.getLatitude(), pos.getLongitude()), 14);
 				mapa.animateCamera(actualizar);
 				Toast.makeText(getApplicationContext(), "Mapa actualizado Latitud: "+pos.getLatitude()+ " Longitud: "+pos.getLongitude(), Toast.LENGTH_LONG).show();
+				//Actualizamos la lista de los portales más cercanos en base a mi posición y los marco en el mapa.
+				LatLng longLatid = new LatLng(pos.getLatitude(), pos.getLongitude());
+				GestionarPortales gestion = new GestionarPortales(InicioActivity.this);
+				JSONArray jsonArr = gestion.listaPortales(longLatid);
+				//A partir de los resultados, marcamos las posiciones en el mapa.
+				for(int i=0;i<jsonArr.length();i++) {
+					try {
+						mapa.addMarker(new MarkerOptions().position(new LatLng(jsonArr.getJSONObject(i).getDouble("latitud"),jsonArr.getJSONObject(i).getDouble("longitud"))).title("Descripción del marcador"));
+					} catch (JSONException e) {
+						e.printStackTrace();
+						Log.e("Error JSON", "Se ha producido un error a la hora de manejar el JSON con los Markers del MAPA");
+					}
+				}
 			} 
 		});
 	}
