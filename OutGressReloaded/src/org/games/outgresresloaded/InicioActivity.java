@@ -131,7 +131,7 @@ public class InicioActivity extends FragmentActivity {
 					
 					try {
 						mapa.addMarker(new MarkerOptions().position(new LatLng(jsonArr.getJSONObject(i).getDouble("latitud"),jsonArr.getJSONObject(i).getDouble("longitud")))
-								.title("Descripci�n del marcador").snippet("and snippet"));
+								.title(jsonArr.getJSONObject(i).getString("nombre")).snippet("and snippet"));
 								//.icon(color));
 					} catch (JSONException e) {
 						e.printStackTrace();

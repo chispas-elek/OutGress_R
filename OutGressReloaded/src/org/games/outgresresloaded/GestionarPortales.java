@@ -133,6 +133,7 @@ public class GestionarPortales {
 						posicionAct.setLongitude(longitudAct);
 						resultadoPortalOrdenado = posicionUsu.distanceTo(posicionAct);
 						Log.i("PortalOrdenado", "El resultado del portal Ordenado es: "+resultadoPortalOrdenado);
+						//TODO Por alguna razón la lógica va del revés REVISAR
 						if(resultadoPortalActual < resultadoPortalOrdenado); {
 							//El portal, actual est� mas cerca del usuario
 							indexOrdenados.add(j,i );
