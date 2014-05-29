@@ -106,8 +106,6 @@ public class GestionarPortales {
 				Double longitudDest = jsonArr.getJSONObject(i).getDouble("longitud");
 				Double latitudUsu = pLatl.latitude;
 				Double longitudUsu = pLatl.longitude;
-				float[] resultadoPortalActual = null;
-				float[] resultadoPortalOrdenado = null;
 				if(indexOrdenados.size() == 0) {
 					//La lista de index est� vac�a inserto directamente
 					indexOrdenados.add(i);
@@ -115,15 +113,27 @@ public class GestionarPortales {
 					//La lista contiene elementos, comparo para saber cual es m�s peque�o
 					int j = 0;
 					boolean insertado = false;
+					float resultadoPortalActual = 0;
+					float resultadoPortalOrdenado = 0;
 					while(j < indexOrdenados.size() && !insertado) {
 						Double latitudAct = jsonArr.getJSONObject(indexOrdenados.get(j)).getDouble("latitud");
 						Double longitudAct = jsonArr.getJSONObject(indexOrdenados.get(j)).getDouble("longitud");
 						Log.i("Valor latitudAct", "El valor actual de latitud es: "+latitudAct);
-						Location.distanceBetween(latitudUsu, longitudUsu, latitudDest, longitudDest, resultadoPortalActual);
-						Log.i("PortalActual", "El resultado del portal Actual es: "+resultadoPortalActual[0]);
-						Location.distanceBetween(latitudUsu, longitudUsu, latitudAct, longitudAct, resultadoPortalOrdenado);
-						Log.i("PortalOrdenado", "El resultado del portal Ordenado es: "+resultadoPortalOrdenado[0]);
-						if(resultadoPortalActual[0] < resultadoPortalOrdenado[0]); {
+						Location posicionUsu = new Location("posicionUsu");
+						Location posicionDest = new Location("posicionDest");
+						Location posicionAct = new Location("posicionAct");
+						//Seteamos las longitudes y latitudes
+						posicionUsu.setLatitude(latitudUsu);
+						posicionUsu.setLongitude(longitudUsu);
+						posicionDest.setLatitude(latitudDest);
+						posicionDest.setLongitude(longitudDest);
+						resultadoPortalActual = posicionUsu.distanceTo(posicionDest);
+						Log.i("PortalActual", "El resultado del portal Actual es: "+resultadoPortalActual);
+						posicionAct.setLatitude(latitudAct);
+						posicionAct.setLongitude(longitudAct);
+						resultadoPortalOrdenado = posicionUsu.distanceTo(posicionAct);
+						Log.i("PortalOrdenado", "El resultado del portal Ordenado es: "+resultadoPortalOrdenado);
+						if(resultadoPortalActual < resultadoPortalOrdenado); {
 							//El portal, actual est� mas cerca del usuario
 							indexOrdenados.add(j,i );
 							insertado = true;
