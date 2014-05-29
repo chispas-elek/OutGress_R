@@ -97,6 +97,14 @@ public class InicioActivity extends FragmentActivity {
 		
 	}
 	
+	/**
+	 * Éste método actualiza una serie de parámetros en el juego
+	 * 
+	 * - Actualiza la posición en Google Maps
+	 * - Actualiza los portales más cercanos al jugador
+	 * - Marca cada portal con el color del equipo corresondiente
+	 */
+	
 	private void actualizarPosicion(){
 		Handler handler = new Handler(Looper.getMainLooper());
 		handler.post(new Runnable(){
@@ -106,6 +114,7 @@ public class InicioActivity extends FragmentActivity {
 				Location pos = elManager.getLastKnownLocation(mejorProveedor);
 				CameraUpdate actualizar = CameraUpdateFactory.newLatLngZoom(new LatLng(pos.getLatitude(), pos.getLongitude()), 14);
 				mapa.animateCamera(actualizar);
+				//TODO Recuerda eliminar éste toast
 				Toast.makeText(getApplicationContext(), "Mapa actualizado Latitud: "+pos.getLatitude()+ " Longitud: "+pos.getLongitude(), Toast.LENGTH_LONG).show();
 				//Actualizamos la lista de los portales m�s cercanos en base a mi posici�n y los marco en el mapa.
 				LatLng longLatid = new LatLng(pos.getLatitude(), pos.getLongitude());
@@ -113,29 +122,37 @@ public class InicioActivity extends FragmentActivity {
 				JSONArray jsonArr = gestion.listaPortales(longLatid);
 				//A partir de los resultados, marcamos las posiciones en el mapa.
 				for(int i=0;i<jsonArr.length();i++) {
-					//Preguntamos a la BD de qué color es el 
-					
-					//TODO Hay que hacer una llamada a la BD para saber a qué equipoo pertenece el jugador que posee el portal
-					
-					//TODO Cuando sepamos de que equipo es el portal capturado, hacemos condiciones para darle color al marquer. 
-					
-					/**
-					 * Tendremos 3 colores
-					 * 
-					 * Verde
-					 * Azul
-					 * Gris
-					 */
-					
-					//BitmapDescriptor color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE);
-					
+					//Preguntamos a la BD a qué equipo pertenece el portal capturado para que ponga una marca representado su color
+					JSONArray jsonInfoJug = null;
+					BitmapDescriptor color = null;
+					ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
 					try {
+						parametros.add(new BasicNameValuePair("idusuario",Integer.toString(jsonArr.getJSONObject(i).getInt("owner"))));
+						CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(InicioActivity.this,parametros,"detallejugador.php").execute();
+						jsonInfoJug = new JSONArray(result.get());
+						
+						if (jsonInfoJug.getJSONObject(0).getString("equipo") == "azul") {
+							color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
+						}else if (jsonInfoJug.getJSONObject(0).getString("equipo") == "verde") {
+							color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
+						}else {
+							//Significa que es un portal sin capturar, esto es, no petenece a ningún equipo
+							color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW);
+						}
+						
+						//Generamos le marker con la información recopilada
 						mapa.addMarker(new MarkerOptions().position(new LatLng(jsonArr.getJSONObject(i).getDouble("latitud"),jsonArr.getJSONObject(i).getDouble("longitud")))
-								.title(jsonArr.getJSONObject(i).getString("nombre")).snippet("and snippet"));
-								//.icon(color));
+								.title(jsonArr.getJSONObject(i).getString("nombre")).snippet("and snippet")
+								.icon(color));
 					} catch (JSONException e) {
 						e.printStackTrace();
-						Log.e("Error JSON", "Se ha producido un error a la hora de manejar el JSON con los Markers del MAPA");
+						Log.e("JSON Exception", "Error a la hora de manejar el JSON para obtener el detalle del jugador o el marker");
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+						Log.e("JSON Interrup", "Error de interrupción a la hora de manejar el JSON para obtene el detalle del jugador o el marker");
+					} catch (ExecutionException e) {
+						e.printStackTrace();
+						Log.e("JSON Execute", "Error de ejecución del JSON para detalle del jugador o el marker");
 					}
 				}
 			} 

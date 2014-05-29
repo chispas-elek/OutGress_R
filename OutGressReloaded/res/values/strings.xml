@@ -8,5 +8,6 @@
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="title_activity_inicio">InicioActivity</string>
     <string name="title_activity_info_portal">InfoPortal</string>
+    <string name="title_activity_insertar_portal_nuevo">InsertarPortalNuevo</string>
 
 </resources>

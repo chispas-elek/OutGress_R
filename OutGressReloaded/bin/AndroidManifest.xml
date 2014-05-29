@@ -62,6 +62,10 @@
             android:name="org.games.outgresresloaded.InfoPortal"
             android:label="@string/title_activity_info_portal" >
         </activity>
+        <activity
+            android:name="org.games.outgresresloaded.InsertarPortalNuevoActivity"
+            android:label="@string/title_activity_insertar_portal_nuevo" >
+        </activity>
     </application>
 
 </manifest>

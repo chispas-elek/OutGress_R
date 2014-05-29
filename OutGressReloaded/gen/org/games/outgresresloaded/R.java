@@ -222,11 +222,12 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f060013;
-        public static final int contrasena=0x7f060011;
+        public static final int action_settings=0x7f060014;
+        public static final int container=0x7f06000d;
+        public static final int contrasena=0x7f060012;
         public static final int elmapa=0x7f06000c;
         public static final int hybrid=0x7f060004;
-        public static final int imageView1=0x7f060012;
+        public static final int imageView1=0x7f060013;
         public static final int infoButAtacarPortal=0x7f060007;
         public static final int infoCapturadoPor=0x7f060008;
         public static final int infoFechaCapturado=0x7f060009;
@@ -234,14 +235,14 @@ containing a value of this type.
         public static final int infoNombrePortal=0x7f060005;
         public static final int infoPortalDescripcion=0x7f06000b;
         public static final int infoPortalDistancia=0x7f06000a;
-        public static final int login=0x7f06000e;
+        public static final int login=0x7f06000f;
         public static final int none=0x7f060000;
         public static final int normal=0x7f060001;
         public static final int satellite=0x7f060002;
         public static final int terrain=0x7f060003;
-        public static final int textView1=0x7f06000d;
-        public static final int textView2=0x7f06000f;
-        public static final int usuario=0x7f060010;
+        public static final int textView1=0x7f06000e;
+        public static final int textView2=0x7f060010;
+        public static final int usuario=0x7f060011;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f080000;
@@ -249,16 +250,18 @@ containing a value of this type.
     public static final class layout {
         public static final int activity_info_portal=0x7f030000;
         public static final int activity_inicio=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int activity_splash_screen=0x7f030003;
-        public static final int fragment_info_portal=0x7f030004;
-        public static final int fragment_main=0x7f030005;
+        public static final int activity_insertar_portal_nuevo=0x7f030002;
+        public static final int activity_main=0x7f030003;
+        public static final int activity_splash_screen=0x7f030004;
+        public static final int fragment_info_portal=0x7f030005;
+        public static final int fragment_main=0x7f030006;
     }
     public static final class menu {
         public static final int info_portal=0x7f0b0000;
         public static final int inicio=0x7f0b0001;
-        public static final int main=0x7f0b0002;
-        public static final int splash_screen=0x7f0b0003;
+        public static final int insertar_portal_nuevo=0x7f0b0002;
+        public static final int main=0x7f0b0003;
+        public static final int splash_screen=0x7f0b0004;
     }
     public static final class string {
         public static final int action_settings=0x7f07001d;
@@ -364,6 +367,7 @@ containing a value of this type.
         public static final int login=0x7f07001e;
         public static final int title_activity_info_portal=0x7f070021;
         public static final int title_activity_inicio=0x7f070020;
+        public static final int title_activity_insertar_portal_nuevo=0x7f070022;
         public static final int title_activity_splash_screen=0x7f07001f;
     }
     public static final class style {
