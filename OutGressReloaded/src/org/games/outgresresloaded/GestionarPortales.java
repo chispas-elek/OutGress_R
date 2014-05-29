@@ -134,11 +134,13 @@ public class GestionarPortales {
 						resultadoPortalOrdenado = posicionUsu.distanceTo(posicionAct);
 						Log.i("PortalOrdenado", "El resultado del portal Ordenado es: "+resultadoPortalOrdenado);
 						//TODO Por alguna razón la lógica va del revés REVISAR
-						if(resultadoPortalActual < resultadoPortalOrdenado); {
+						//if(resultadoPortalActual > resultadoPortalOrdenado); {
+						if(Float.compare(resultadoPortalActual, resultadoPortalOrdenado) < 0) {
 							//El portal, actual est� mas cerca del usuario
 							indexOrdenados.add(j,i );
 							insertado = true;
 						}
+						j++;
 					}
 					//Nuestro valor est� m�s alejado que el resto, asi que entra en el ultimo lugar.
 					if(!insertado) {
