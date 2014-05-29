@@ -41,7 +41,7 @@
         android:text="Capturado por:\n" />
 
     <TextView
-        android:id="@+id/infoFechaCaputrado"
+        android:id="@+id/infoFechaCapturado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/infoCapturadoPor"
