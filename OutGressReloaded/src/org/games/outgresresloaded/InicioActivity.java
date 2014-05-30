@@ -167,8 +167,11 @@ public class InicioActivity extends FragmentActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.anadir:
-				//TODO Ejecutamos la clase
-				Toast.makeText(getApplicationContext(), "Aún no funciono ñapas", Toast.LENGTH_LONG).show();
+				Location pos = elManager.getLastKnownLocation(mejorProveedor);
+				LatLng posicionJugador = new LatLng(pos.getLatitude(), pos.getLongitude());
+				Intent i = new Intent(InicioActivity.this,InsertarPortalNuevoActivity.class);
+				i.putExtra("posicion",posicionJugador);
+				startActivity(i);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

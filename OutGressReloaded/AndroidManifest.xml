@@ -27,7 +27,9 @@
         android:protectionLevel="signature" />
 
     <uses-permission android:name="org.games.outgresresloaded.permission.C2D_MESSAGE" />
-
+    <uses-permission android:name="android.permission.CAMERA"/>
+	<uses-feature android:name="android.hardware.camera" android:required="false"></uses-feature> 
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"

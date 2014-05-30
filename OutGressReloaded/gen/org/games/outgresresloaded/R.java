@@ -222,13 +222,15 @@ containing a value of this type.
         public static final int ic_plusone_tall_off_client=0x7f02001c;
     }
     public static final class id {
-        public static final int action_settings=0x7f060014;
-        public static final int anadir=0x7f060015;
-        public static final int container=0x7f06000d;
-        public static final int contrasena=0x7f060012;
+        public static final int action_settings=0x7f060017;
+        public static final int anadir=0x7f060018;
+        public static final int contrasena=0x7f060016;
+        public static final int editText1=0x7f060010;
+        public static final int editText2=0x7f060012;
         public static final int elmapa=0x7f06000c;
+        public static final int enviar=0x7f060013;
         public static final int hybrid=0x7f060004;
-        public static final int imageView1=0x7f060013;
+        public static final int imageView1=0x7f06000e;
         public static final int infoButAtacarPortal=0x7f060007;
         public static final int infoCapturadoPor=0x7f060008;
         public static final int infoFechaCapturado=0x7f060009;
@@ -236,14 +238,15 @@ containing a value of this type.
         public static final int infoNombrePortal=0x7f060005;
         public static final int infoPortalDescripcion=0x7f06000b;
         public static final int infoPortalDistancia=0x7f06000a;
-        public static final int login=0x7f06000f;
+        public static final int login=0x7f060014;
         public static final int none=0x7f060000;
         public static final int normal=0x7f060001;
         public static final int satellite=0x7f060002;
         public static final int terrain=0x7f060003;
-        public static final int textView1=0x7f06000e;
-        public static final int textView2=0x7f060010;
-        public static final int usuario=0x7f060011;
+        public static final int textView1=0x7f06000d;
+        public static final int textView2=0x7f06000f;
+        public static final int textView3=0x7f060011;
+        public static final int usuario=0x7f060015;
     }
     public static final class integer {
         public static final int google_play_services_version=0x7f080000;
