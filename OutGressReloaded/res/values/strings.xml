@@ -9,5 +9,5 @@
     <string name="title_activity_inicio">InicioActivity</string>
     <string name="title_activity_info_portal">InfoPortal</string>
     <string name="title_activity_insertar_portal_nuevo">InsertarPortalNuevo</string>
-
+	<string name="anadir">Añadir un nuevo portal</string>
 </resources>

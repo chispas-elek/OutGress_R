@@ -223,6 +223,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int action_settings=0x7f060014;
+        public static final int anadir=0x7f060015;
         public static final int container=0x7f06000d;
         public static final int contrasena=0x7f060012;
         public static final int elmapa=0x7f06000c;
@@ -265,6 +266,7 @@ containing a value of this type.
     }
     public static final class string {
         public static final int action_settings=0x7f07001d;
+        public static final int anadir=0x7f070023;
         public static final int app_name=0x7f07001b;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 

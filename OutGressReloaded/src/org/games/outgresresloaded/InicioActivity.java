@@ -114,8 +114,7 @@ public class InicioActivity extends FragmentActivity {
 				Location pos = elManager.getLastKnownLocation(mejorProveedor);
 				CameraUpdate actualizar = CameraUpdateFactory.newLatLngZoom(new LatLng(pos.getLatitude(), pos.getLongitude()), 14);
 				mapa.animateCamera(actualizar);
-				//TODO Recuerda eliminar éste toast
-				Toast.makeText(getApplicationContext(), "Mapa actualizado Latitud: "+pos.getLatitude()+ " Longitud: "+pos.getLongitude(), Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), "Mapa actualizado Latitud: "+pos.getLatitude()+ " Longitud: "+pos.getLongitude(), Toast.LENGTH_LONG).show();
 				//Actualizamos la lista de los portales m�s cercanos en base a mi posici�n y los marco en el mapa.
 				LatLng longLatid = new LatLng(pos.getLatitude(), pos.getLongitude());
 				GestionarPortales gestion = new GestionarPortales(InicioActivity.this);
@@ -130,10 +129,9 @@ public class InicioActivity extends FragmentActivity {
 						parametros.add(new BasicNameValuePair("idusuario",Integer.toString(jsonArr.getJSONObject(i).getInt("owner"))));
 						CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(InicioActivity.this,parametros,"detallejugador.php").execute();
 						jsonInfoJug = new JSONArray(result.get());
-						
-						if (jsonInfoJug.getJSONObject(0).getString("equipo") == "azul") {
+						if (jsonInfoJug.getJSONObject(0).getString("equipo").equals("azul")) {
 							color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE);
-						}else if (jsonInfoJug.getJSONObject(0).getString("equipo") == "verde") {
+						}else if (jsonInfoJug.getJSONObject(0).getString("equipo").equals("verde")) {
 							color = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN);
 						}else {
 							//Significa que es un portal sin capturar, esto es, no petenece a ningún equipo
@@ -159,5 +157,21 @@ public class InicioActivity extends FragmentActivity {
 		});
 	}
 		
-		
+	@Override
+	public boolean onCreateOptionsMenu (Menu menu) {
+		getMenuInflater().inflate(R.menu.inicio, menu);
+		return true; 
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.anadir:
+				//TODO Ejecutamos la clase
+				Toast.makeText(getApplicationContext(), "Aún no funciono ñapas", Toast.LENGTH_LONG).show();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 }
