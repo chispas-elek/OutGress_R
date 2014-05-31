@@ -49,6 +49,7 @@ public class InsertarPortalNuevoActivity extends Activity {
 			}
 		});
 		
+		
 		final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 		
 		TextView addEditNombre = (TextView) findViewById(R.id.addEditNombre);
