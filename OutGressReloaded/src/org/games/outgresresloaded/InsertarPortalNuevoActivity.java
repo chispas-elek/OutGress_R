@@ -3,9 +3,11 @@ package org.games.outgresresloaded;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -15,6 +17,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -32,6 +35,7 @@ public class InsertarPortalNuevoActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insertar_portal_nuevo);
+		
 		//Recuperamos las coordenadas enviadas por el intent
 		LatLng posicionJugador = null;
 		Bundle extras = getIntent().getExtras();
@@ -39,6 +43,7 @@ public class InsertarPortalNuevoActivity extends Activity {
 			posicionJugador = (LatLng) extras.get("posicion");
 		}
 		
+		//Gestionamos el ImageView y configuramos que al pulsar sobre el elemento se abra la cámara de fotos.
 		imagen = (ImageView) findViewById(R.id.addFoto);
 		imagen.setOnClickListener(new View.OnClickListener() {
 			
@@ -50,6 +55,7 @@ public class InsertarPortalNuevoActivity extends Activity {
 			}
 		});
 		
+		//Recogemos los parámetros y los enviamos a la BD
 		final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 		Toast.makeText(getApplicationContext(), "Probando id usuario: "+prefs.getInt("idusuario", -1) , Toast.LENGTH_LONG).show();
 		final TextView addEditNombre = (TextView) findViewById(R.id.addEditNombre);
@@ -76,9 +82,18 @@ public class InsertarPortalNuevoActivity extends Activity {
 				parametros.add(new BasicNameValuePair("fecha",fecha));
 				parametros.add(new BasicNameValuePair("aceptado","0"));
 				CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(InsertarPortalNuevoActivity.this,parametros,"anadirportal.php").execute();
-				
+				try {
+					cerrarActivity(result.get());
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					Log.e("Error de Interrupción","Ha ocurrido un error de interrupción en InsertarPortalNuevo");
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+					Log.e("Error de ejecución", "Ha ocurrido un error de ejecución en InsertarPortalNuevo");
+				}
 			}
 		});
+		
 	}
 	
 	/**
@@ -94,7 +109,7 @@ public class InsertarPortalNuevoActivity extends Activity {
 	
 	/**
 	 * Ã‰ste mÃ©todo tiene como objetivo crear un Thumbail de una foto sacada con la cÃ¡mara
-	 * para realizar una previsualizaciÃ³n
+	 * para realizar una previsualizacion
 	 */
 	
 	@Override
@@ -104,6 +119,15 @@ public class InsertarPortalNuevoActivity extends Activity {
 	        Bitmap imageBitmap = (Bitmap) extras.get("data");
 	        imagen.setImageBitmap(imageBitmap);
 	    }
+	}
+	
+	private void cerrarActivity(String resultado) {
+		if(resultado.contains("0")) {
+			//Inserción correcta
+			this.finish();
+		}else {
+			Toast.makeText(getApplicationContext(), "Ha ocurrido un error a la hora de agregar el nuevo portal, por favor, intentalo de nuevo", Toast.LENGTH_LONG).show();
+		}
 	}
 	
 }
