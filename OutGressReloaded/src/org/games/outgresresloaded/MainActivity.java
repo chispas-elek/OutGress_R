@@ -90,6 +90,7 @@ public class MainActivity extends Activity {
 						CumplePeticiones result2 = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros2,"login.php").execute();
 						//Recogemos la respuesta
 						try {
+							//TODO SI EL USUARIO METE MAL ALGO DA NULL Y DA PROBLEMAS REVISAR
 							jsonArray = new JSONArray(result2.get());
 							//Comprobamos que hayamos recibido algun dato
 							if(jsonArray.getJSONObject(0).getString("usuario") != null) {
