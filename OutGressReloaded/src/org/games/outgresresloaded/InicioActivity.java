@@ -38,6 +38,7 @@ import android.os.Build;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -88,12 +89,11 @@ public class InicioActivity extends FragmentActivity {
 		, 0, 1000 * 40);
 		
 		//El usuario pulsa sobre un portal
-		mapa.setOnMarkerClickListener(new OnMarkerClickListener() {
-			public boolean onMarkerClick(Marker marker) {
+		 mapa.setOnInfoWindowClickListener(new OnInfoWindowClickListener() {          
+            public void onInfoWindowClick(Marker marker) {
 				Intent i = new Intent(InicioActivity.this, InfoPortal.class);
 				i.putExtra("idportal", Integer.parseInt(marker.getSnippet()));
 				startActivity(i);
-				return false;
 			}
 		}); 
 		
@@ -142,7 +142,7 @@ public class InicioActivity extends FragmentActivity {
 						
 						//Generamos le marker con la información recopilada
 						mapa.addMarker(new MarkerOptions().position(new LatLng(jsonArr.getJSONObject(i).getDouble("latitud"),jsonArr.getJSONObject(i).getDouble("longitud")))
-								.title(jsonArr.getJSONObject(i).getString("nombre")).snippet(Integer.toString(jsonArr.getJSONObject(i).getInt("idportal"))).visible(false)
+								.title(jsonArr.getJSONObject(i).getString("nombre")).snippet(Integer.toString(jsonArr.getJSONObject(i).getInt("idportal"))).visible(true)
 								.icon(color));
 					} catch (JSONException e) {
 						e.printStackTrace();
