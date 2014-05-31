@@ -4,27 +4,27 @@
     android:layout_height="fill_parent">
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/addTxtTitulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Añadir portal nuevo"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/addFoto"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:src="@android:drawable/ic_menu_add" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/addGUINombre"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nombre del portal:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/editText1"
+        android:id="@+id/addEditNombre"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" >
@@ -33,20 +33,20 @@
     </EditText>
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/addGUIInfo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Descripción:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/addEditInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10" />
 
     <Button
-        android:id="@+id/enviar"
+        android:id="@+id/addEnviar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Enviar" />

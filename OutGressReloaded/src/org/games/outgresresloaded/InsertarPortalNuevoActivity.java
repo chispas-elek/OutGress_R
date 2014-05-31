@@ -1,21 +1,24 @@
 package org.games.outgresresloaded;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
-import android.app.ActionBar;
-import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
-import android.os.Build;
+import android.widget.TextView;
 import android.provider.MediaStore;
 
 
@@ -35,13 +38,52 @@ public class InsertarPortalNuevoActivity extends Activity {
 			posicionJugador = (LatLng) extras.get("posicion");
 		}
 		
-		imagen = (ImageView) findViewById(R.id.imageView1);
+		imagen = (ImageView) findViewById(R.id.addFoto);
 		imagen.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
 				//Ejecutamos el intent para sacar la foto
 				dispatchTakePictureIntent();
+				
+			}
+		});
+		
+		final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
+		
+		TextView addEditNombre = (TextView) findViewById(R.id.addEditNombre);
+		final String nombre = (String) addEditNombre.getText();
+		TextView addEditInfo = (TextView) findViewById(R.id.addEditInfo);
+		final String info = (String) addEditInfo.getText();
+		
+		final String latitud = String.valueOf(posicionJugador.latitude);
+		final String longitud = String.valueOf(posicionJugador.longitude);
+		
+		final String idusuario = String.valueOf(prefs.getInt("idusuario",0));
+	
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		final String fecha = df.format(new Date());
+		
+		final String aceptado = String.valueOf(0);
+		
+		Button enviar = (Button) findViewById(R.id.addEnviar);
+		enviar.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+			
+				ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
+				parametros.add(new BasicNameValuePair("foto",fecha));
+				parametros.add(new BasicNameValuePair("nombre",nombre));
+				parametros.add(new BasicNameValuePair("info",info));
+				parametros.add(new BasicNameValuePair("latitud",latitud));
+				parametros.add(new BasicNameValuePair("longitud",longitud));
+				parametros.add(new BasicNameValuePair("owner",idusuario));
+				parametros.add(new BasicNameValuePair("fecha",fecha));
+				parametros.add(new BasicNameValuePair("aceptado",aceptado));
+				CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(InsertarPortalNuevoActivity.this,parametros,"anadirportal.php").execute();
+				
+				
 				
 			}
 		});
