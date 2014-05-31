@@ -1,5 +1,7 @@
 package org.games.outgresresloaded;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -7,15 +9,21 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.games.outgresresloaded.GestionarPortales;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.android.gms.maps.model.LatLng;
 
 /**
  * InfoPortales mostrar√° en pantalla los datos del portal seleccionado, y permitir√° 
@@ -26,6 +34,9 @@ import org.json.JSONObject;
 
 public class InfoPortal extends Activity {
 
+	private Timer mTimer;
+	private JSONObject portal;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -36,7 +47,6 @@ public class InfoPortal extends Activity {
 		String bestP = lm.getBestProvider(crit, true);
 		
 		int idportal = 0;
-		JSONObject portal;
 		String foto;
 		String nombre;
 		String info;
@@ -110,13 +120,54 @@ public class InfoPortal extends Activity {
 				Log.e("ExecutionException", "Error durante la ejecuci√≥n del procesamiento de la imagen");
 			}
 			
-			
+			//Creamos el temporizador
+			this.mTimer = new Timer();
+			this.mTimer.scheduleAtFixedRate(new TimerTask(){
+			     
+				@Override
+				public void run() {
+					actualizarPosicion();
+				}      
+			}
+			, 0, 1000 * 40);
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
 			Log.e("JSONException", "Error al procesar JSON");
 		}
 		
+	}
+	
+	private void actualizarPosicion() {
+		Handler handler = new Handler(Looper.getMainLooper());
+		handler.post(new Runnable() {
+			
+			@Override
+			public void run() {
+				LocationListener listenerlocalizacion = new MiLocationListener();
+				LocationManager elManager = (LocationManager) getSystemService(LOCATION_SERVICE); 
+				//Configuramos los criterios (Si lo deseamos)
+				Criteria losCriterios = new Criteria();
+				String mejorProveedor = elManager.getBestProvider(losCriterios, true);
+				elManager.requestLocationUpdates(mejorProveedor, 3000,0, listenerlocalizacion);
+				Location pos = elManager.getLastKnownLocation(mejorProveedor);
+				//Calculamos las distancias. Si el jugador est· a menos de 50 metros podr· obtener el portal
+				try {
+					Location posicionDest = new Location("posicionDest");
+					posicionDest.setLatitude((portal.getDouble("latitud")));
+					posicionDest.setLongitude(portal.getDouble("longitud"));
+					Float distancia = pos.distanceTo(posicionDest);
+					if(Float.compare(distancia, 50) < 0) {
+						//La distancia es menor de 50 metros, activo el portal
+						Button atacar = (Button) findViewById(R.id.infoButAtacarPortal);
+						atacar.setEnabled(true);
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+			}
+		});
 	}
 
 }

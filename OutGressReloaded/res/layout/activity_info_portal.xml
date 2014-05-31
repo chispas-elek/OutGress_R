@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/infoFotoPortal"
         android:layout_toRightOf="@+id/infoFotoPortal"
+        android:enabled="false"
         android:text="Atacar portal" />
 
     <TextView
