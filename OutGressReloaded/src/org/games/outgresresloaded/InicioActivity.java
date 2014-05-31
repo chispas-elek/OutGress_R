@@ -90,7 +90,9 @@ public class InicioActivity extends FragmentActivity {
 		//El usuario pulsa sobre un portal
 		mapa.setOnMarkerClickListener(new OnMarkerClickListener() {
 			public boolean onMarkerClick(Marker marker) {
-				//qu� se quiere hacer
+				Intent i = new Intent(InicioActivity.this, InfoPortal.class);
+				i.putExtra("idportal", Integer.parseInt(marker.getSnippet()));
+				startActivity(i);
 				return false;
 			}
 		}); 
@@ -140,7 +142,7 @@ public class InicioActivity extends FragmentActivity {
 						
 						//Generamos le marker con la información recopilada
 						mapa.addMarker(new MarkerOptions().position(new LatLng(jsonArr.getJSONObject(i).getDouble("latitud"),jsonArr.getJSONObject(i).getDouble("longitud")))
-								.title(jsonArr.getJSONObject(i).getString("nombre")).snippet("and snippet")
+								.title(jsonArr.getJSONObject(i).getString("nombre")).snippet(Integer.toString(jsonArr.getJSONObject(i).getInt("idportal"))).visible(false)
 								.icon(color));
 					} catch (JSONException e) {
 						e.printStackTrace();
