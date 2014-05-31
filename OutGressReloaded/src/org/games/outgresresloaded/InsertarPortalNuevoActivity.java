@@ -3,6 +3,8 @@ package org.games.outgresresloaded;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.http.NameValuePair;
@@ -30,6 +32,7 @@ public class InsertarPortalNuevoActivity extends Activity {
 
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private ImageView imagen;
+	private Timer mTimer;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +59,7 @@ public class InsertarPortalNuevoActivity extends Activity {
 		});
 		
 		//Recogemos los parámetros y los enviamos a la BD
-		final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
-		Toast.makeText(getApplicationContext(), "Probando id usuario: "+prefs.getInt("idusuario", -1) , Toast.LENGTH_LONG).show();
+		//final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 		final TextView addEditNombre = (TextView) findViewById(R.id.addEditNombre);
 		final TextView addEditInfo = (TextView) findViewById(R.id.addEditInfo);
 		final String latitud = Double.toString(posicionJugador.latitude);
@@ -65,13 +67,25 @@ public class InsertarPortalNuevoActivity extends Activity {
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		final String fecha = df.format(new Date());
 		
+		//Ponemos un timer que compruebe si el ususrio ha introducido ok los datos
+		//Creamos el temporizador
+		this.mTimer = new Timer();
+		this.mTimer.scheduleAtFixedRate(new TimerTask(){
+				     
+			@Override
+			public void run() {
+				comprobarDatos(addEditNombre.getText().toString(),addEditInfo.getText().toString(),imagen);
+			}      
+		}
+		, 0, 1000 * 5);
+		
 		
 		Button enviar = (Button) findViewById(R.id.addEnviar);
 		enviar.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-			
+				
 				ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
 				parametros.add(new BasicNameValuePair("foto",fecha));
 				parametros.add(new BasicNameValuePair("nombre",addEditNombre.getText().toString()));
@@ -127,6 +141,14 @@ public class InsertarPortalNuevoActivity extends Activity {
 			this.finish();
 		}else {
 			Toast.makeText(getApplicationContext(), "Ha ocurrido un error a la hora de agregar el nuevo portal, por favor, intentalo de nuevo", Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	private void comprobarDatos(String pNombrePortal,String pInfoPortal,ImageView pImagen) {
+		if(!pNombrePortal.contains("") && !pInfoPortal.contains("") && pImagen.getDrawable() != null) {
+			//El usuario ha introducido los datos de forma correcta. Habilito el boton
+			Button enviar = (Button) findViewById(R.id.addEnviar);
+			enviar.setEnabled(true);
 		}
 	}
 	

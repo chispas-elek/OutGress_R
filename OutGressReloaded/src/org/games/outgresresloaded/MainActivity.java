@@ -63,6 +63,7 @@ public class MainActivity extends Activity {
 				if(jsonArray.getJSONObject(0).getInt("idusuario") == idUsuario) {
 					Intent i = new Intent(MainActivity.this,InicioActivity.class);
 					startActivity(i);
+					cerrarActividad();
 				}else {
 					//Algo no ha ido bien
 					Log.e("Login", "Error a la hora de procesar los identificadores del login");
@@ -106,7 +107,7 @@ public class MainActivity extends Activity {
 							
 							Intent i = new Intent(MainActivity.this,InicioActivity.class);
 							startActivity(i);
-							
+							cerrarActividad();
 						}else {
 							//Los datos introducidos son incorrectos
 							Toast.makeText(getApplicationContext(), "Los datos introducidos son incorrectos", Toast.LENGTH_LONG).show();
@@ -186,6 +187,14 @@ public class MainActivity extends Activity {
 			}
 		}.execute(null, null, null);
 		
+	}
+	
+	/**
+	 * Éste métoco cierra la actividad actual
+	 */
+	
+	private void cerrarActividad() {
+		this.finish();
 	}
 }
 
