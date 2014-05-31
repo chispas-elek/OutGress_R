@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 
+import com.google.android.gms.drive.internal.AddEventListenerRequest;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.app.Activity;
@@ -19,6 +20,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +36,9 @@ public class InsertarPortalNuevoActivity extends Activity {
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private ImageView imagen;
 	private Timer mTimer;
+	private TextView addEditNombre;
+	private TextView addEditInfo;
+	private Button enviar;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -60,27 +66,56 @@ public class InsertarPortalNuevoActivity extends Activity {
 		
 		//Recogemos los parámetros y los enviamos a la BD
 		//final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
-		final TextView addEditNombre = (TextView) findViewById(R.id.addEditNombre);
-		final TextView addEditInfo = (TextView) findViewById(R.id.addEditInfo);
+		
+		addEditNombre = (TextView) findViewById(R.id.addEditNombre);
+		addEditInfo = (TextView) findViewById(R.id.addEditInfo);
 		final String latitud = Double.toString(posicionJugador.latitude);
 		final String longitud = Double.toString(posicionJugador.longitude);
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		final String fecha = df.format(new Date());
 		
-		//Ponemos un timer que compruebe si el ususrio ha introducido ok los datos
-		//Creamos el temporizador
-		this.mTimer = new Timer();
-		this.mTimer.scheduleAtFixedRate(new TimerTask(){
-				     
+		addEditNombre.addTextChangedListener(new TextWatcher() {
+			
 			@Override
-			public void run() {
-				comprobarDatos(addEditNombre.getText().toString(),addEditInfo.getText().toString(),imagen);
-			}      
-		}
-		, 0, 1000 * 5);
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				activarBoton();
+				
+			}
+		});
+		
+		addEditInfo.addTextChangedListener(new TextWatcher() {
+			
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				
+			}
+			
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count,
+					int after) {
+				
+			}
+			
+			@Override
+			public void afterTextChanged(Editable s) {
+				activarBoton();
+			}
+		});
 		
 		
-		Button enviar = (Button) findViewById(R.id.addEnviar);
+		enviar = (Button) findViewById(R.id.addEnviar);
 		enviar.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -144,12 +179,18 @@ public class InsertarPortalNuevoActivity extends Activity {
 		}
 	}
 	
-	private void comprobarDatos(String pNombrePortal,String pInfoPortal,ImageView pImagen) {
-		if(!pNombrePortal.contains("") && !pInfoPortal.contains("") && pImagen.getDrawable() != null) {
-			//El usuario ha introducido los datos de forma correcta. Habilito el boton
-			Button enviar = (Button) findViewById(R.id.addEnviar);
+	/**
+	 * Éste método sirve para activar el botón de enviar en caso de contener datos
+	 */
+	
+	public void activarBoton() {
+		boolean preparadoEdit = addEditNombre.getText().toString().length() > 3;
+		boolean preparadoInfo = addEditInfo.getText().toString().length() > 3;
+		if(preparadoEdit && preparadoInfo) {
+			//Los campos contienen datos
 			enviar.setEnabled(true);
+		}else {
+			enviar.setEnabled(false);
 		}
 	}
-	
 }
