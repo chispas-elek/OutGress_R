@@ -1,5 +1,6 @@
 package org.games.outgresresloaded;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -19,7 +20,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.games.outgresresloaded.GestionarPortales;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,6 +56,7 @@ public class InfoPortal extends Activity {
 		String info;
 		Double latPort;
 		Double longPort;
+		String ownerid;
 		String owner;
 		String fecha;
 		
@@ -77,8 +82,14 @@ public class InfoPortal extends Activity {
 			info = portal.getString("info");
 			latPort = portal.getDouble("latitud");
 			longPort = portal.getDouble("longitud");
-			owner = portal.getString("owner");
+			ownerid = portal.getString("owner");
 			fecha = portal.getString("fecha");
+			
+			ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
+			parametros.add(new BasicNameValuePair("idusuario",ownerid));
+			CumplePeticiones cp = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"detallejugador.php").execute();
+			JSONArray array = new JSONArray(cp.get());
+			owner = array.getJSONObject(0).getString("nick");
 			
 			TextView infoNombrePortal = (TextView) findViewById(R.id.infoNombrePortal);
 			infoNombrePortal.setText(nombre);
@@ -131,7 +142,7 @@ public class InfoPortal extends Activity {
 			}
 			, 0, 1000 * 40);
 			
-		} catch (JSONException e) {
+		} catch (JSONException | InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 			Log.e("JSONException", "Error al procesar JSON");
 		}
@@ -151,7 +162,7 @@ public class InfoPortal extends Activity {
 				String mejorProveedor = elManager.getBestProvider(losCriterios, true);
 				elManager.requestLocationUpdates(mejorProveedor, 3000,0, listenerlocalizacion);
 				Location pos = elManager.getLastKnownLocation(mejorProveedor);
-				//Calculamos las distancias. Si el jugador está a menos de 50 metros podrá obtener el portal
+				//Calculamos las distancias. Si el jugador estï¿½ a menos de 50 metros podrï¿½ obtener el portal
 				try {
 					Location posicionDest = new Location("posicionDest");
 					posicionDest.setLatitude((portal.getDouble("latitud")));
