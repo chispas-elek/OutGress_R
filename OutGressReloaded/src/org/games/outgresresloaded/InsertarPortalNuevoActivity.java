@@ -188,7 +188,8 @@ public class InsertarPortalNuevoActivity extends Activity {
 		boolean preparadoEdit = addEditNombre.getText().toString().length() > 3;
 		boolean preparadoInfo = addEditInfo.getText().toString().length() > 3;
 		Bitmap bitmap = ((BitmapDrawable)imagen.getDrawable()).getBitmap();
-		
+		//TODO Encontrar una solución mejor
+		//La imagen preinsertada tiene un count fijo , al sacar una foto y cambiar el bitmap, el count cambia, El codigo detecta ese cambio y habilita el botón
 		if(preparadoEdit && preparadoInfo && bitmap.getByteCount() != 5776) {
 			//Los campos contienen datos
 			enviar.setEnabled(true);
