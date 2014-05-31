@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.provider.MediaStore;
 
 
@@ -49,23 +50,15 @@ public class InsertarPortalNuevoActivity extends Activity {
 			}
 		});
 		
-		
 		final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
-		
-		TextView addEditNombre = (TextView) findViewById(R.id.addEditNombre);
-		final String nombre = (String) addEditNombre.getText();
-		TextView addEditInfo = (TextView) findViewById(R.id.addEditInfo);
-		final String info = (String) addEditInfo.getText();
-		
-		final String latitud = String.valueOf(posicionJugador.latitude);
-		final String longitud = String.valueOf(posicionJugador.longitude);
-		
-		final String idusuario = String.valueOf(prefs.getInt("idusuario",0));
-	
+		Toast.makeText(getApplicationContext(), "Probando id usuario: "+prefs.getInt("idusuario", -1) , Toast.LENGTH_LONG).show();
+		final TextView addEditNombre = (TextView) findViewById(R.id.addEditNombre);
+		final TextView addEditInfo = (TextView) findViewById(R.id.addEditInfo);
+		final String latitud = Double.toString(posicionJugador.latitude);
+		final String longitud = Double.toString(posicionJugador.longitude);
 		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		final String fecha = df.format(new Date());
 		
-		final String aceptado = String.valueOf(0);
 		
 		Button enviar = (Button) findViewById(R.id.addEnviar);
 		enviar.setOnClickListener(new View.OnClickListener() {
@@ -75,16 +68,14 @@ public class InsertarPortalNuevoActivity extends Activity {
 			
 				ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
 				parametros.add(new BasicNameValuePair("foto",fecha));
-				parametros.add(new BasicNameValuePair("nombre",nombre));
-				parametros.add(new BasicNameValuePair("info",info));
+				parametros.add(new BasicNameValuePair("nombre",addEditNombre.getText().toString()));
+				parametros.add(new BasicNameValuePair("info",addEditInfo.getText().toString()));
 				parametros.add(new BasicNameValuePair("latitud",latitud));
 				parametros.add(new BasicNameValuePair("longitud",longitud));
-				parametros.add(new BasicNameValuePair("owner",idusuario));
+				parametros.add(new BasicNameValuePair("owner","0"));
 				parametros.add(new BasicNameValuePair("fecha",fecha));
-				parametros.add(new BasicNameValuePair("aceptado",aceptado));
+				parametros.add(new BasicNameValuePair("aceptado","0"));
 				CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(InsertarPortalNuevoActivity.this,parametros,"anadirportal.php").execute();
-				
-				
 				
 			}
 		});
