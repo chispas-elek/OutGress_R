@@ -19,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -186,7 +187,9 @@ public class InsertarPortalNuevoActivity extends Activity {
 	public void activarBoton() {
 		boolean preparadoEdit = addEditNombre.getText().toString().length() > 3;
 		boolean preparadoInfo = addEditInfo.getText().toString().length() > 3;
-		if(preparadoEdit && preparadoInfo) {
+		Bitmap bitmap = ((BitmapDrawable)imagen.getDrawable()).getBitmap();
+		
+		if(preparadoEdit && preparadoInfo && bitmap.getByteCount() != 5776) {
 			//Los campos contienen datos
 			enviar.setEnabled(true);
 		}else {
