@@ -129,7 +129,7 @@ public class InfoPortal extends Activity {
 					actualizarPosicion();
 				}      
 			}
-			, 0, 1000 * 40);
+			, 0, 1000 * 10);
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -157,7 +157,7 @@ public class InfoPortal extends Activity {
 					posicionDest.setLatitude((portal.getDouble("latitud")));
 					posicionDest.setLongitude(portal.getDouble("longitud"));
 					Float distancia = pos.distanceTo(posicionDest);
-					if(Float.compare(distancia, 50) < 0) {
+					if(Float.compare(distancia, 100) < 0) {
 						//La distancia es menor de 50 metros, activo el portal
 						Button atacar = (Button) findViewById(R.id.infoButAtacarPortal);
 						atacar.setEnabled(true);

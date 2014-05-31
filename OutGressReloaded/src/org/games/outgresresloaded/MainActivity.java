@@ -45,81 +45,85 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		//Comprobamos si el dispositivo es compatible con GCM si lo es, que ejecute todo
-		//if(checkPlayServices()) {;
-		
-		final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
-		//Comprobamos si existen datos del usuario guardados en el sistema
-		String codigoUser = prefs.getString("validacion", "0");
-		if(codigoUser != "0") {
-			//El usuario se ha logueado previamente, comprobamos que esto sea así y saltamos a la pantalla principal
-			ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
-			parametros.add(new BasicNameValuePair("validacion",codigoUser));
-			CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros,"loginc.php").execute();
-			//Recogemos la respuesta
-			try {
-				this.jsonArray = new JSONArray(result.get());
-				//Comprobamos si el identificador que teníamos guardado coincide con el de la BD
-				int idUsuario = prefs.getInt("idusuario", 0);
-				if(jsonArray.getJSONObject(0).getInt("idusuario") == idUsuario) {
-					Intent i = new Intent(MainActivity.this,InicioActivity.class);
-					startActivity(i);
-					cerrarActividad();
-				}else {
-					//Algo no ha ido bien
-					Log.e("Login", "Error a la hora de procesar los identificadores del login");
-				}
-			} catch (JSONException | InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-				Log.e("Error JSON", "Error al procesar el archivo JSON");
-			}
+		if(checkPlayServices()) {;
 			
-			
-		}else {
-			//El usuario aún no se ha logueado en el sistema, recogemos y tratamos los datos
-			final EditText usu = (EditText) findViewById(R.id.usuario);
-			final EditText pass = (EditText) findViewById(R.id.contrasena);
-			Button login = (Button) findViewById(R.id.login);
-			login.setOnClickListener(new View.OnClickListener() {
-			
-				@Override
-				public void onClick(View v) {
-					//Preparamos los datos y llamamos a la BD
-					ArrayList<NameValuePair> parametros2 = new ArrayList<NameValuePair>();
-					parametros2.add(new BasicNameValuePair("usuario", usu.getText().toString()));
-					parametros2.add(new BasicNameValuePair("pass", pass.getText().toString()));
-					CumplePeticiones result2 = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros2,"login.php").execute();
-					//Recogemos la respuesta
-					try {
-						jsonArray = new JSONArray(result2.get());
-						//Comprobamos que hayamos recibido algun dato
-						if(jsonArray.getJSONObject(0).getString("usuario") != null) {
-							//El usuario logueado es correcto asi que procedemos a registrar los datos en el dispotivo.
-							//Registramos el dispositivo en el GCM y guardamos el identificador
-							registrarseGCM();
-							//Guardaremos el idusuario y la validacion
-							SharedPreferences.Editor editor = prefs.edit();
-							editor.putInt("idusuario", jsonArray.getJSONObject(0).getInt("idusuario"));
-							editor.putString("validacion", jsonArray.getJSONObject(0).getString("validacion"));
-							editor.putString("equipo", jsonArray.getJSONObject(0).getString("equipo"));
-							editor.commit();
-							//Una vez validado el usuario se carga la interfaz principal del sistema
-							Toast.makeText(getApplicationContext(), "Login correcto, bienvenido", Toast.LENGTH_LONG).show();
-							
-							Intent i = new Intent(MainActivity.this,InicioActivity.class);
-							startActivity(i);
-							cerrarActividad();
-						}else {
-							//Los datos introducidos son incorrectos
-							Toast.makeText(getApplicationContext(), "Los datos introducidos son incorrectos", Toast.LENGTH_LONG).show();
-						}
-					} catch (JSONException | InterruptedException
-							| ExecutionException e) {
-						e.printStackTrace();
-						Log.e("Error JSON","Error al manejar el JSON");
+			final SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
+			//Comprobamos si existen datos del usuario guardados en el sistema
+			String codigoUser = prefs.getString("validacion", "0");
+			if(codigoUser != "0") {
+				//El usuario se ha logueado previamente, comprobamos que esto sea así y saltamos a la pantalla principal
+				ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
+				parametros.add(new BasicNameValuePair("validacion",codigoUser));
+				CumplePeticiones result = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros,"loginc.php").execute();
+				//Recogemos la respuesta
+				try {
+					this.jsonArray = new JSONArray(result.get());
+					//Comprobamos si el identificador que teníamos guardado coincide con el de la BD
+					int idUsuario = prefs.getInt("idusuario", 0);
+					if(jsonArray.getJSONObject(0).getInt("idusuario") == idUsuario) {
+						Intent i = new Intent(MainActivity.this,InicioActivity.class);
+						startActivity(i);
+						cerrarActividad();
+					}else {
+						//Algo no ha ido bien
+						Log.e("Login", "Error a la hora de procesar los identificadores del login");
 					}
-					
+				} catch (JSONException | InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+					Log.e("Error JSON", "Error al procesar el archivo JSON");
 				}
-			});
+				
+				
+			}else {
+				//El usuario aún no se ha logueado en el sistema, recogemos y tratamos los datos
+				final EditText usu = (EditText) findViewById(R.id.usuario);
+				final EditText pass = (EditText) findViewById(R.id.contrasena);
+				Button login = (Button) findViewById(R.id.login);
+				login.setOnClickListener(new View.OnClickListener() {
+				
+					@Override
+					public void onClick(View v) {
+						//Preparamos los datos y llamamos a la BD
+						ArrayList<NameValuePair> parametros2 = new ArrayList<NameValuePair>();
+						parametros2.add(new BasicNameValuePair("usuario", usu.getText().toString()));
+						parametros2.add(new BasicNameValuePair("pass", pass.getText().toString()));
+						CumplePeticiones result2 = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros2,"login.php").execute();
+						//Recogemos la respuesta
+						try {
+							jsonArray = new JSONArray(result2.get());
+							//Comprobamos que hayamos recibido algun dato
+							if(jsonArray.getJSONObject(0).getString("usuario") != null) {
+								//El usuario logueado es correcto asi que procedemos a registrar los datos en el dispotivo.
+								//Registramos el dispositivo en el GCM y guardamos el identificador
+								registrarseGCM();
+								//Guardaremos el idusuario y la validacion
+								SharedPreferences.Editor editor = prefs.edit();
+								editor.putInt("idusuario", jsonArray.getJSONObject(0).getInt("idusuario"));
+								editor.putString("validacion", jsonArray.getJSONObject(0).getString("validacion"));
+								editor.putString("equipo", jsonArray.getJSONObject(0).getString("equipo"));
+								editor.commit();
+								//Una vez validado el usuario se carga la interfaz principal del sistema
+								Toast.makeText(getApplicationContext(), "Login correcto, bienvenido", Toast.LENGTH_LONG).show();
+								
+								Intent i = new Intent(MainActivity.this,InicioActivity.class);
+								startActivity(i);
+								cerrarActividad();
+							}else {
+								//Los datos introducidos son incorrectos
+								Toast.makeText(getApplicationContext(), "Los datos introducidos son incorrectos", Toast.LENGTH_LONG).show();
+							}
+						} catch (JSONException | InterruptedException
+								| ExecutionException e) {
+							e.printStackTrace();
+							Log.e("Error JSON","Error al manejar el JSON");
+						}
+						
+					}
+				});
+			}
+		}else {
+			//Terminamos la app si no tenemos los google play services
+			this.finish();
 		}
 	}
 	
@@ -129,7 +133,7 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		super.onResume();
 		//Comprobamos que nuestro dispositivo sea compatible con GCM
-		//this.checkPlayServices();
+		this.checkPlayServices();
 	}
 
 	/**
@@ -166,7 +170,7 @@ public class MainActivity extends Activity {
 			protected String doInBackground(Void... params) {
 				String msg = "";
 				try {
-					gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+					gcm = GoogleCloudMessaging.getInstance(MainActivity.this);
 					//SENDER_ID contiene el número de registro del proyecto.
 					String regid = gcm.register(SENDER_ID);
 					msg  = "Dispositivo registrado correctamente con el regid: "+regid;
