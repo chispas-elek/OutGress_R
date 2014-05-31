@@ -105,6 +105,7 @@ public class MainActivity extends Activity {
 								//Una vez validado el usuario se carga la interfaz principal del sistema
 								Toast.makeText(getApplicationContext(), "Login correcto, bienvenido", Toast.LENGTH_LONG).show();
 								
+								
 								Intent i = new Intent(MainActivity.this,InicioActivity.class);
 								startActivity(i);
 								cerrarActividad();
@@ -179,6 +180,16 @@ public class MainActivity extends Activity {
 					SharedPreferences.Editor editor = prefs.edit();
 					editor.putString("gcm", regid);
 					editor.commit();
+					//Guardo en la BD el registro
+					ArrayList<NameValuePair> parametros3 = new ArrayList<NameValuePair>();
+					try {
+						parametros3.add(new BasicNameValuePair("idusuario", Integer.toString(jsonArray.getJSONObject(0).getInt("idusuario"))));
+						parametros3.add(new BasicNameValuePair("gcm",regid));
+						CumplePeticiones result3 = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros3,"registrargcm.php").execute();
+					} catch (JSONException e) {
+						e.printStackTrace();
+						Log.e("JSON Exception", "Error de excensión a la hora de manejar el JSON que registra el GCM en MAINACTIVITY");
+					}
 				} catch (IOException ex) {
 					msg = "Error :" + ex.getMessage();
 				}
@@ -187,7 +198,7 @@ public class MainActivity extends Activity {
 			@Override
 			protected void onPostExecute(String msg) {
 				//Mostramos un toast con lo que ha sucedido a la hora de registrar el dispositivo
-				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+				//Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
 			}
 		}.execute(null, null, null);
 		
