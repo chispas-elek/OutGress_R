@@ -203,7 +203,7 @@ public class InfoPortal extends Activity {
 	
 	/**
 	 * 
-	 * Éste método ataca un portal, cambiando el poseedor al que lo ha atacado y desbancando al anterior.
+	 * ï¿½ste mï¿½todo ataca un portal, cambiando el poseedor al que lo ha atacado y desbancando al anterior.
 	 * @param pIdPortal El identificador del portal
 	 * @param pIDUsuario El identiicador del usuario
 	 */
@@ -227,12 +227,13 @@ public class InfoPortal extends Activity {
 		try {
 			if(cp.get().contains("0")) {
 				//Los datos se han actualizado correctamente
-				//Mandamos la notificación push
+				//Mandamos la notificaciï¿½n push
 				ArrayList<NameValuePair> parametros2 = new ArrayList<NameValuePair>();
 				try {
 					parametros.add(new BasicNameValuePair("gcm",array.getJSONObject(0).getString("gcm")));
 					parametros.add(new BasicNameValuePair("nombre",portal.getString("nombre")));
 					parametros.add(new BasicNameValuePair("nick",array.getJSONObject(0).getString("nick")));
+					parametros.add(new BasicNameValuePair("idportal",portal.getString("idportal")));
 					CumplePeticiones cp2 = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"gcm.php").execute();
 					this.finish();
 				} catch (JSONException e) {
@@ -241,14 +242,14 @@ public class InfoPortal extends Activity {
 				}
 				
 			}else {
-				Toast.makeText(getApplicationContext(), "Ha ocurrido algún error, por favor inténtalo de nuevo", Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), "Ha ocurrido algï¿½n error, por favor intï¿½ntalo de nuevo", Toast.LENGTH_LONG).show();
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			Log.e("InterrupException", "Error de interrupción a la hora de capturar un portal");
+			Log.e("InterrupException", "Error de interrupciï¿½n a la hora de capturar un portal");
 		} catch (ExecutionException e) {
 			e.printStackTrace();
-			Log.e("ExecuteException", "Error de ejecución a la hora de capturar un portal");
+			Log.e("ExecuteException", "Error de ejecuciï¿½n a la hora de capturar un portal");
 		}
 	}
 
