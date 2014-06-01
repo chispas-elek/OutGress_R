@@ -199,17 +199,26 @@ public class InfoPortal extends Activity {
 		});
 	}
 	
-	private void atacarPortal(int pIdPortal, int pUsuario) {
+	/**
+	 * 
+	 * Éste método ataca un portal, cambiando el poseedor al que lo ha atacado y desbancando al anterior.
+	 * @param pIdPortal El identificador del portal
+	 * @param pIDUsuario El identiicador del usuario
+	 */
+	
+	private void atacarPortal(int pIdPortal, int pIDUsuario) {
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		String fecha = df.format(new Date());
 		
 		String idportal = String.valueOf(pIdPortal);
-		String idusuario = String.valueOf(pUsuario);
+		String idusuario = String.valueOf(pIDUsuario);
 		
 		ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
 		parametros.add(new BasicNameValuePair("idportal",idportal));
-		parametros.add(new BasicNameValuePair("idusuario",idusuario));
+		parametros.add(new BasicNameValuePair("owner",idusuario));
 		parametros.add(new BasicNameValuePair("fecha",fecha));
+		
+		//TODO GCM
 		
 		CumplePeticiones cp = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"atacarportal.php").execute();
 	}
