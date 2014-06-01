@@ -1,6 +1,8 @@
 package org.games.outgresresloaded;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
@@ -18,6 +20,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -145,6 +148,17 @@ public class InfoPortal extends Activity {
 			}
 			, 0, 1000 * 10);
 			
+			final int numPortal = idportal;
+			final int numOwner = Integer.parseInt(ownerid);
+			Button atacar = (Button) findViewById(R.id.infoButAtacarPortal);
+			atacar.setOnClickListener(new View.OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					atacarPortal(numPortal, numOwner);
+				}
+			});
+			
 		} catch (JSONException | InterruptedException | ExecutionException e) {
 			e.printStackTrace();
 			Log.e("JSONException", "Error al procesar JSON");
@@ -183,6 +197,21 @@ public class InfoPortal extends Activity {
 				
 			}
 		});
+	}
+	
+	private void atacarPortal(int pIdPortal, int pUsuario) {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		String fecha = df.format(new Date());
+		
+		String idportal = String.valueOf(pIdPortal);
+		String idusuario = String.valueOf(pUsuario);
+		
+		ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
+		parametros.add(new BasicNameValuePair("idportal",idportal));
+		parametros.add(new BasicNameValuePair("idusuario",idusuario));
+		parametros.add(new BasicNameValuePair("fecha",fecha));
+		
+		CumplePeticiones cp = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"atacarportal.php").execute();
 	}
 
 }
