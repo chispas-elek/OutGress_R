@@ -46,11 +46,13 @@ public class InfoPortal extends Activity {
 	private Timer mTimer;
 	private JSONObject portal;
 	private JSONArray array;
+	private SharedPreferences prefs;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_info_portal);
+		this.prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 		
 		LocationManager lm = (LocationManager) getSystemService(LOCATION_SERVICE);
 		Criteria crit = new Criteria();
@@ -149,7 +151,7 @@ public class InfoPortal extends Activity {
 			, 0, 1000 * 10);
 			
 			final int numPortal = idportal;
-			final int numOwner = Integer.parseInt(ownerid);
+			final int numOwner = prefs.getInt("idusuario", -4);
 			Button atacar = (Button) findViewById(R.id.infoButAtacarPortal);
 			atacar.setOnClickListener(new View.OnClickListener() {
 				
@@ -181,7 +183,6 @@ public class InfoPortal extends Activity {
 				Location pos = elManager.getLastKnownLocation(mejorProveedor);
 				//Calculamos las distancias. Si el jugador est� a menos de 50 metros podr� obtener el portal
 				try {
-					SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 					Location posicionDest = new Location("posicionDest");
 					posicionDest.setLatitude((portal.getDouble("latitud")));
 					posicionDest.setLongitude(portal.getDouble("longitud"));
