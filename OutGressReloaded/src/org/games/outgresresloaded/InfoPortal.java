@@ -6,7 +6,9 @@ import java.util.TimerTask;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.location.Criteria;
 import android.location.Location;
@@ -40,6 +42,7 @@ public class InfoPortal extends Activity {
 
 	private Timer mTimer;
 	private JSONObject portal;
+	private JSONArray array;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +91,7 @@ public class InfoPortal extends Activity {
 			ArrayList<NameValuePair> parametros = new ArrayList<NameValuePair>();
 			parametros.add(new BasicNameValuePair("idusuario",ownerid));
 			CumplePeticiones cp = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"detallejugador.php").execute();
-			JSONArray array = new JSONArray(cp.get());
+			array = new JSONArray(cp.get());
 			owner = array.getJSONObject(0).getString("nick");
 			
 			TextView infoNombrePortal = (TextView) findViewById(R.id.infoNombrePortal);
@@ -164,12 +167,13 @@ public class InfoPortal extends Activity {
 				Location pos = elManager.getLastKnownLocation(mejorProveedor);
 				//Calculamos las distancias. Si el jugador est� a menos de 50 metros podr� obtener el portal
 				try {
+					SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 					Location posicionDest = new Location("posicionDest");
 					posicionDest.setLatitude((portal.getDouble("latitud")));
 					posicionDest.setLongitude(portal.getDouble("longitud"));
 					Float distancia = pos.distanceTo(posicionDest);
-					if(Float.compare(distancia, 100) < 0) {
-						//La distancia es menor de 50 metros, activo el portal
+					if(Float.compare(distancia, 100) < 0 && !array.getJSONObject(0).getString("equipo").equals(prefs.getString("equipo", "fallo"))) {
+						//La distancia es menor de 50 metros y el portal no pertenece al equipo del jugador
 						Button atacar = (Button) findViewById(R.id.infoButAtacarPortal);
 						atacar.setEnabled(true);
 					}
