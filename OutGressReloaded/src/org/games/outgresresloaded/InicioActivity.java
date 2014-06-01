@@ -17,6 +17,7 @@ import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.NotificationManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
@@ -114,6 +115,12 @@ public class InicioActivity extends FragmentActivity {
 			@Override
 			public void run() {
 				Location pos = elManager.getLastKnownLocation(mejorProveedor);
+				ProgressDialog barProgressDialog = new ProgressDialog(InicioActivity.this);
+				while(pos == null) {
+					//Espperamos a la señal GPS
+					pos = elManager.getLastKnownLocation(mejorProveedor);
+				}
+				//Actualizamos la posición de la cámara
 				CameraUpdate actualizar = CameraUpdateFactory.newLatLngZoom(new LatLng(pos.getLatitude(), pos.getLongitude()), 14);
 				mapa.animateCamera(actualizar);
 				//Toast.makeText(getApplicationContext(), "Mapa actualizado Latitud: "+pos.getLatitude()+ " Longitud: "+pos.getLongitude(), Toast.LENGTH_LONG).show();
