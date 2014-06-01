@@ -223,10 +223,23 @@ public class InfoPortal extends Activity {
 		//TODO GCM
 		
 		CumplePeticiones cp = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"atacarportal.php").execute();
+		
 		try {
 			if(cp.get().contains("0")) {
 				//Los datos se han actualizado correctamente
-				this.finish();
+				//Mandamos la notificación push
+				ArrayList<NameValuePair> parametros2 = new ArrayList<NameValuePair>();
+				try {
+					parametros.add(new BasicNameValuePair("gcm",array.getJSONObject(0).getString("gcm")));
+					parametros.add(new BasicNameValuePair("nombre",portal.getString("nombre")));
+					parametros.add(new BasicNameValuePair("nick",array.getJSONObject(0).getString("nick")));
+					CumplePeticiones cp2 = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"gcm.php").execute();
+					this.finish();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}else {
 				Toast.makeText(getApplicationContext(), "Ha ocurrido algún error, por favor inténtalo de nuevo", Toast.LENGTH_LONG).show();
 			}
