@@ -24,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -222,6 +223,20 @@ public class InfoPortal extends Activity {
 		//TODO GCM
 		
 		CumplePeticiones cp = (CumplePeticiones) new CumplePeticiones(InfoPortal.this,parametros,"atacarportal.php").execute();
+		try {
+			if(cp.get().contains("0")) {
+				//Los datos se han actualizado correctamente
+				this.finish();
+			}else {
+				Toast.makeText(getApplicationContext(), "Ha ocurrido algún error, por favor inténtalo de nuevo", Toast.LENGTH_LONG).show();
+			}
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			Log.e("InterrupException", "Error de interrupción a la hora de capturar un portal");
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+			Log.e("ExecuteException", "Error de ejecución a la hora de capturar un portal");
+		}
 	}
 
 }
