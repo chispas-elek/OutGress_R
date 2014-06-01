@@ -111,12 +111,14 @@ public class MainActivity extends Activity {
 								registrarseGCM();
 							}else {
 								//Los datos introducidos son incorrectos
-								Toast.makeText(getApplicationContext(), "Los datos introducidos son incorrectos", Toast.LENGTH_LONG).show();
+								//Toast.makeText(getApplicationContext(), "Los datos introducidos son incorrectos", Toast.LENGTH_LONG).show();
 							}
 						} catch (JSONException | InterruptedException
 								| ExecutionException e) {
 							e.printStackTrace();
 							Log.e("Error JSON","Error al manejar el JSON");
+							//WORKARROUND al loguear mal el JSON da null y salta ésta excepción, vamos a mostrar el TOAS de momenot hasta arreglar éste incidente menor
+							Toast.makeText(getApplicationContext(), "Los datos introducidos son incorrectos", Toast.LENGTH_LONG).show();
 						}
 						
 					}
