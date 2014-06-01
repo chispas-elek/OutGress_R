@@ -96,7 +96,6 @@ public class MainActivity extends Activity {
 							if(jsonArray.getJSONObject(0).getString("usuario") != null) {
 								//El usuario logueado es correcto asi que procedemos a registrar los datos en el dispotivo.
 								//Registramos el dispositivo en el GCM y guardamos el identificador
-								registrarseGCM();
 								//Guardaremos el idusuario y la validacion
 								SharedPreferences.Editor editor = prefs.edit();
 								editor.putInt("idusuario", jsonArray.getJSONObject(0).getInt("idusuario"));
@@ -109,7 +108,7 @@ public class MainActivity extends Activity {
 								
 								Intent i = new Intent(MainActivity.this,InicioActivity.class);
 								startActivity(i);
-								cerrarActividad();
+								registrarseGCM();
 							}else {
 								//Los datos introducidos son incorrectos
 								Toast.makeText(getApplicationContext(), "Los datos introducidos son incorrectos", Toast.LENGTH_LONG).show();
@@ -176,6 +175,7 @@ public class MainActivity extends Activity {
 					//SENDER_ID contiene el nÃºmero de registro del proyecto.
 					String regid = gcm.register(SENDER_ID);
 					msg  = "Dispositivo registrado correctamente con el regid: "+regid;
+					Log.i("GCMOK", msg);
 					//Guardamos el GCM en las preferencias
 					SharedPreferences prefs = getSharedPreferences("preferenciasOR", Context.MODE_PRIVATE);
 					SharedPreferences.Editor editor = prefs.edit();
@@ -189,7 +189,7 @@ public class MainActivity extends Activity {
 						CumplePeticiones result3 = (CumplePeticiones) new CumplePeticiones(MainActivity.this,parametros3,"registrargcm.php").execute();
 					} catch (JSONException e) {
 						e.printStackTrace();
-						Log.e("JSON Exception", "Error de excensión a la hora de manejar el JSON que registra el GCM en MAINACTIVITY");
+						Log.e("JSON Exception", "Error de excensiï¿½n a la hora de manejar el JSON que registra el GCM en MAINACTIVITY");
 					}
 				} catch (IOException ex) {
 					msg = "Error :" + ex.getMessage();
@@ -200,13 +200,14 @@ public class MainActivity extends Activity {
 			protected void onPostExecute(String msg) {
 				//Mostramos un toast con lo que ha sucedido a la hora de registrar el dispositivo
 				//Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+				cerrarActividad();
 			}
 		}.execute(null, null, null);
 		
 	}
 	
 	/**
-	 * Éste métoco cierra la actividad actual
+	 * ï¿½ste mï¿½toco cierra la actividad actual
 	 */
 	
 	private void cerrarActividad() {
